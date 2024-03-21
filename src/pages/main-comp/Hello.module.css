@@ -58,12 +58,13 @@
 
 .hello {
   position: relative;
-  left: 20px;
-  font-size: 120px;
+  left: 46px;
+  font-size: 98px;
   font-weight: 900;
   font-family: 'Pretendard';
   color: #ffffff;
   line-height: 1.2;
+  top: 16px;
 }
 
 
@@ -71,6 +72,8 @@
   display: flex;
   padding-left: 30px;
   padding-right: 30px;
+  position: relative;
+  bottom: 26px;
 }
 
 .subBox {
@@ -83,9 +86,16 @@
   align-items: center;;
 }
 
+@keyframes blinkCursor {
+  from {border-right-color: transparent;}
+  to {border-right-color: black;}
+}
+
 .subText {
   color: #ffffff;
   font-size: 48px;
   font-weight: 100;
   line-height: 1;
+  border-right: 2px solid black; /* 커서 효과 추가 */
+  animation: blinkCursor 0.75s steps(2, start) infinite;
 }

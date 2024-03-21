@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -6,10 +6,20 @@ import styled from 'styled-components';
 import Hello from './main-comp/Hello';
 import Contact from './main-comp/Contact';
 import PortfolioBanner from './main-comp/PortfolioBanner';
+import LinkSNS from './main-comp/LinkSNS';
+import InfoTXT from './main-comp/InfoTXT';
+import PhotoNayoung from './main-comp/PhotoNayoung';
+import Ticket from './main-comp/Ticket';
+
+
+
 
 // 스타일 컴포넌트를 사용하여 카드 스타일을 정의합니다.
 const Card = styled.div`
-  background: #ffffff16;
+`;
+
+const TicketCard = styled(Ticket)`
+  //ticket  
 `;
 
 // Hello 컴포넌트를 감싸는 스타일 컴포넌트
@@ -25,41 +35,61 @@ const PortfolioCard = styled(PortfolioBanner)`
 //portfolio
 `;
 
+const LinkSNSCard = styled(LinkSNS)`
+//LinkSNS Comp
+`;
+
+const InfoTXTCard = styled(InfoTXT)`
+    //InfoTXT
+`;
+
+const PhotoNayoungCard = styled(PhotoNayoung)`
+    //nayoung
+`;
+
 // 메인 컴포넌트
 const BentoBoxGrid = () => {
+    const [isSelected, setIsSelected] = useState<string>('Go to...');
+    const handleMouseEnter = (cardName: string) => {
+        setIsSelected(cardName);
+    };
+
+    const handleMouseLeave = () => {
+        setIsSelected('Go to...');
+    };
     // 그리드 레이아웃 설정
     const layout = [
-        { i: 'a', x: 0, y: 0, w: 2, h: 14 },
-        { i: 'hello', x: 2, y: 0, w: 6, h: 10 }, // 여기에서 w와 h는 Hello 컴포넌트의 크기를 결정합니다.
-        { i: 'b', x: 2, y: 0, w: 6, h: 4 },
-        { i: 'c', x: 8, y: 0, w: 2, h: 3 },
-        { i: 'd', x: 8, y: 0, w: 2, h: 3 },
-        { i: 'e', x: 8, y: 0, w: 2, h: 4 },
+        { i: 'ticket', x: 0, y: 0, w: 2, h: 14 },
+        { i: 'hello', x: 2, y: 0, w: 6, h: 10, static: true },
+        { i: 'portfolio', x: 2, y: 0, w: 6, h: 4 },
+        { i: 'sns', x: 8, y: 0, w: 2, h: 3 },
+        { i: 'info', x: 8, y: 0, w: 2, h: 3 },
+        { i: 'photo', x: 8, y: 0, w: 2, h: 4 },
         { i: 'contact', x: 8, y: 0, w: 2, h: 4 },
     ];
 
     return (
         <Container>
             <GridLayout className="layout" layout={layout} cols={12} rowHeight={30} width={1200}>
-                <Card key="a">
-                    <p>I'm nev, a developer and product designer from Ireland...</p>
+                <Card key="ticket" onMouseEnter={() => handleMouseEnter('Playground')} onMouseLeave={handleMouseLeave}>
+                    <TicketCard />
                 </Card>
                 <Card key="hello" data-grid={layout.find(item => item.i === 'hello')}>
-                    <HelloCard />
+                    <HelloCard isSelected={isSelected} />
                 </Card>
-                <Card key="b">
+                <Card key="portfolio" onMouseEnter={() => handleMouseEnter('Portfolio')} onMouseLeave={handleMouseLeave}>
                     <PortfolioCard />
                 </Card>
-                <Card key="c">
-                    <div>안녕</div>
+                <Card key="sns" onMouseEnter={() => handleMouseEnter('SNS Links')} onMouseLeave={handleMouseLeave}>
+                    <LinkSNSCard />
                 </Card>
-                <Card key="d">
-                    <div>안녕</div>
+                <Card key="info" onMouseEnter={() => handleMouseEnter('Information')} onMouseLeave={handleMouseLeave}>
+                    <InfoTXTCard />
                 </Card>
-                <Card key="e">
-                    <div>안녕</div>
+                <Card key="photo" onMouseEnter={() => handleMouseEnter('Personal Statement')} onMouseLeave={handleMouseLeave}>
+                    <PhotoNayoungCard />
                 </Card>
-                <Card key="contact">
+                <Card key="contact" onMouseEnter={() => handleMouseEnter('Contact')} onMouseLeave={handleMouseLeave}>
                     <ContactCard />
                 </Card>
 

@@ -1,27 +1,26 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 
-// ImgWrapProps 인터페이스 정의
-interface ImgWrapProps {
+
+interface WrapProps {
     isHovered: boolean;
 }
 
-const PortfolioBanner = () => {
+
+const PhotoNayoung = () => {
     const [isHovered, setIsHovered] = useState<boolean>(false);
 
     return (
         <Container
             onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-        >
+            onMouseLeave={() => setIsHovered(false)}>
             <ImgWrap isHovered={isHovered}>
-                <img src="./image/main/keyboard-glass.png" alt="Keyboard and Glass" />
+                <img src="./image/main/PhotoNayoung.jpeg" />
             </ImgWrap>
-            <TextWrap>
-                <p>Motion graphic</p>
-                <p>UI/UX design</p>
-                <p>Web/App design</p>
-                <p>Front-end development</p>
+            <TextWrap isHovered={isHovered}>
+                <p>
+                    안녕하세요!
+                </p>
             </TextWrap>
         </Container>
     );
@@ -29,37 +28,32 @@ const PortfolioBanner = () => {
 
 const Container = styled.div`
     display: flex;
+    width: 100%;
     height: 100%;
-    background-color: #5200FF;
-    position: relative;
     overflow: hidden;
     border-radius: 15px;
 `;
 
-const ImgWrap = styled.div<ImgWrapProps>`
+const ImgWrap = styled.div<WrapProps>`
     display: flex;
     justify-content: flex-start;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    left: -112px;
+    align-items: flex-end;
     position: relative;
-    top: 10px;
+    top: 0px;
     transition: transform 0.5s ease; // transform 속성에 대한 부드러운 전환 효과 적용
     ${(props) =>
         props.isHovered
             ? css`
-                  transform: scale(1.0); // 호버 시 확대
+                  transform: scale(1.2); // 호버 시 확대
               `
             : css`
-                  transform: scale(0.8); // 호버 해제 시 원래 크기
+                  transform: scale(1.0); // 호버 해제 시 원래 크기
               `}
     img {
         display: flex;
         justify-content: flex-start;
-        width: 650px;
+        width: 100%;
         object-fit: cover;
-        animation: float 5s ease-in-out infinite;
     }
     @keyframes float {
         0%, 100% {
@@ -71,27 +65,32 @@ const ImgWrap = styled.div<ImgWrapProps>`
     }
 `;
 
-const TextWrap = styled.div`
+
+const TextWrap = styled.div<WrapProps>`
     position: absolute;
-    top: 18%;
-    right: 0;
+    top: 22%;
+    left: 10px;
     color: #ffffff;
-    font-weight: 100;
-    font-size: 20px;
+    font-weight: 400;
+    font-size: 16px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     padding-right: 10px;
     p {
-        margin-bottom: 4px; // p 태그 사이의 간격
-        &:not(:last-child) {
-            margin-bottom: 4px; // 마지막 p 태그를 제외한 모든 p 태그에 하단 마진 적용
-        }
-
-        &:hover{
-            font-weight: 300;
-        }
-    }
+        display: inline-block;
+        transform: rotate(-30deg);
+        transition: opacity 0.5s ease; // transform 속성에 대한 부드러운 전환 효과 적용
+            ${(props) =>
+        props.isHovered
+            ? css`
+                        opacity: 1;
+                    `
+            : css`
+                        opacity: 0;
+                    `}
+}   
 `;
 
-export default PortfolioBanner;
+export default PhotoNayoung;
+
