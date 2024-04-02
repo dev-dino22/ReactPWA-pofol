@@ -115,6 +115,18 @@ const Button = styled.button`
 `;
 
 const Container = styled.div`
-    transform: scale(0.6);
+    transform: scale(1);
+    @media only screen and (max-width: 1400px) {
+        transform: scale(0.9);
+    }
+    @media only screen and (max-width: 1200px) {
+        transform: scale(0.8);
+    }
+    @media only screen and (max-width: 991px) {
+        transform: scale(0.7);
+    }
+    @media only screen and (max-width: 767px) {
+        transform: scale(0.6);
+    }
 `
 export default Eye;

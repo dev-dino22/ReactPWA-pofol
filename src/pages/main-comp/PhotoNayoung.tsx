@@ -31,7 +31,10 @@ const Container = styled.div`
     width: 100%;
     height: 100%;
     overflow: hidden;
-    border-radius: 15px;
+    border-radius: 30px;
+    @media only screen and (max-width: 991px) {
+            border-radius: 15px;
+    }
 `;
 
 const ImgWrap = styled.div<WrapProps>`

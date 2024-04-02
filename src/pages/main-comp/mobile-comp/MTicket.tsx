@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled, { css } from "styled-components";
 
 interface WrapProps {
-    isHovered: boolean;
+    isPressed: boolean;
 }
 
 const BarcodeSVG = () => {
@@ -30,15 +30,27 @@ const BarcodeSVG = () => {
 
 }
 
-const Ticket = () => {
-    const [isHovered, setIsHovered] = useState<boolean>(false);
+const MTicket = () => {
+    const [isPressed, setIsPressed] = useState<boolean>(false);
+
+    const handlePressStart = () => {
+        setIsPressed(true);
+    };
+
+    const handlePressEnd = () => {
+        setIsPressed(false);
+    };
 
     return (
         <Container
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseDown={handlePressStart}
+            onMouseUp={handlePressEnd}
+            onMouseLeave={handlePressEnd} // 마우스가 요소를 벗어났을 때도 처리
+            onTouchStart={handlePressStart}
+            onTouchEnd={handlePressEnd}
+            onTouchCancel={handlePressEnd} // 터치가 갑자기 중단되었을 때도 처리
         >
-            <TopContainer>
+            <LeftContainer>
                 <TopWrap>
                     <ImgWrap>
                         <img src="./image/main/ticket-top-woman.png" />
@@ -49,9 +61,9 @@ const Ticket = () => {
                         </TextWrap>
                     </ImgWrap>
                 </TopWrap>
-            </TopContainer>
+            </LeftContainer>
 
-            <BottomContainer isHovered={isHovered}>
+            <RightContainer isPressed={isPressed}>
                 <BottomWrap>
                     <BarcodeWrap>
                         <p style={{ bottom: '1rem' }}>Nayoung Playground</p>
@@ -59,31 +71,31 @@ const Ticket = () => {
                         <p style={{ top: '1rem' }}>10 7885 1556 789651</p>
                     </BarcodeWrap>
                 </BottomWrap>
-            </BottomContainer>
+            </RightContainer>
         </Container>
     );
 }
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
+        display: flex;
+    flex-direction: row;
     height: 100%;
-    position: relative;
     border-radius: 30px;
+    align-items: center;
     @media only screen and (max-width: 991px) {
             border-radius: 15px;
     }
 
 `;
 
-const BottomContainer = styled.div<WrapProps>`
+const RightContainer = styled.div<WrapProps>`
         display: flex;
-        width: 100%;
-        height: 28%;
-        transform-origin: top left; // 회전의 중심점을 상단 왼쪽으로 설정
+        height: 100%;
+        width: 32%;
+        transform-origin: bottom left; // 회전의 중심점을 하단 왼쪽으로 설정
         transition: transform 0.3s ease; // transform 속성에 대한 부드러운 전환 효과 적용
             ${(props) =>
-        props.isHovered
+        props.isPressed
             ? css`
                         transform: rotate(6deg);
                     `
@@ -92,15 +104,16 @@ const BottomContainer = styled.div<WrapProps>`
                     `}
 `;
 
-const TopContainer = styled.div`
+const LeftContainer = styled.div`
     display: flex;
-    height: 72%;
+    Width: 68%;
+    height: 100%;
     background-color: #ffffff;
-    border-bottom: 1px dashed #888888;
+    border-right: 1px dashed #888888;
     overflow: hidden;
-    border-radius: 30px 30px 15px 15px;
+    border-radius: 30px 15px 15px 30px;
     @media only screen and (max-width: 991px) {
-        border-radius: 15px 15px 10px 10px;
+        border-radius: 15px 10px 10px 15px;
     }
 `;
 
@@ -110,9 +123,9 @@ const TopWrap = styled.div`
     width: 100%;
     border: 4px solid #ffffff;
     overflow: hidden;
-    border-radius: 30px 30px 15px 15px;
+    border-radius: 30px 15px 15px 30px;
     @media only screen and (max-width: 991px) {
-        border-radius: 10px 10px 15px 15px;
+        border-radius: 15px 10px 10px 15px;
     }
 `;
 
@@ -133,11 +146,9 @@ const ImgWrap = styled.div`
         width: 180%;
         object-fit: cover;
         position: relative;
-        right: 40px;
-        top: 0px;
-        @media only screen and (max-width: 991px) {
-            transform: scale(1.5);
-        }
+        right: 92px;
+        top: 64px;
+        transform: rotate(-90deg) scale(0.7);
     }
 `;
 
@@ -155,32 +166,32 @@ const TextWrap = styled.div`
 `;
 
 const LeftText = styled.p`
-    position: absolute; // 절대 위치 사용
-    left: 3rem;
-    top: 15rem;
-    transform: translate(-50%, -50%) rotate(90deg); // 위치 조정 및 회전
-    font-size: 10rem;
-    font-weight: 700;
+        position: absolute;
+    left: 18rem;
+    top: 7rem;
+    transform: translate(-50%, -50%);
+    font-size: 12rem;
+    font-weight: 900;
     color: #001AFF;
 `;
 
 const RightText = styled.p`
-    position: absolute; // 절대 위치 사용
-    right: 3rem;
-    bottom: 22.5rem;
-    transform: translate(50%, -50%) rotate(-90deg); // 위치 조정 및 회전
-    font-size: 9.4rem;
+    position: absolute;
+    right: 29rem;
+    bottom: 6.5rem;
+    transform: translate(50%, -50%);
+    font-size: 11rem;
     font-weight: 200;
     color: #001AFF;
 `;
 
 const LeftBottomText = styled.p`
     position: absolute;
-    left: 1.4rem;
-    bottom: 1rem;
-    font-size: 2rem;
-    font-weight: 400;
-    color: #000000;
+    left: 3.4rem;
+    bottom: 4rem;
+    font-size: 4rem;
+    font-weight: 300;
+    color: #e8e9ff;
 `
 
 const BottomWrap = styled.div`
@@ -190,7 +201,7 @@ const BottomWrap = styled.div`
         background-color: #ffffff;
         border: 4px solid #ffffff;
         overflow: hidden;
-        border-radius: 15px 15px 30px 30px;
+        border-radius: 15px 30px 30px 15px;
         @media only screen and (max-width: 991px) {
             border-radius: 10px 10px 15px 15px;
         }
@@ -209,7 +220,7 @@ const BarcodeWrap = styled.div`
         p {
             color: #000000;
             font-weight: 400;
-            font-size: 2.4rem;
+            font-size: 3rem;
             position: relative;
         }
 `;
@@ -220,4 +231,4 @@ const StyledBarcodeSVG = styled(BarcodeSVG)`
     display: block; // SVG를 블록 레벨 요소로 만듭니다.
 `;
 
-export default Ticket;
+export default MTicket;

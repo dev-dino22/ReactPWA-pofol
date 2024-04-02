@@ -15,9 +15,15 @@ const Contact = () => {
 const Container = styled.div`
     width: 100%;
     height: 100%;
-    border-radius: 15px;
+    border-radius: 30px;
+    @media only screen and (max-width: 991px) {
+            border-radius: 15px;
+    }
+    @media only screen and (min-width: 2000px) {
+            border-radius: 60px;
+    }
     border: solid 1px #fff;
-    font-size: 48px;
+    font-size: 9.4rem;
     font-weight: 100;
     line-height: 1;
     display: flex;

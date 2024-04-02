@@ -33,7 +33,10 @@ const Container = styled.div`
     background-color: #5200FF;
     position: relative;
     overflow: hidden;
-    border-radius: 15px;
+    border-radius: 30px;
+    @media only screen and (max-width: 991px) {
+        border-radius: 15px;
+    }
 `;
 
 const ImgWrap = styled.div<ImgWrapProps>`
@@ -57,7 +60,7 @@ const ImgWrap = styled.div<ImgWrapProps>`
     img {
         display: flex;
         justify-content: flex-start;
-        width: 650px;
+        width: 100%;
         object-fit: cover;
         animation: float 5s ease-in-out infinite;
     }
@@ -77,11 +80,12 @@ const TextWrap = styled.div`
     right: 0;
     color: #ffffff;
     font-weight: 100;
-    font-size: 20px;
+    font-size: 3.6rem;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     padding-right: 10px;
+    line-height: 3.6rem;
     p {
         margin-bottom: 4px; // p 태그 사이의 간격
         &:not(:last-child) {

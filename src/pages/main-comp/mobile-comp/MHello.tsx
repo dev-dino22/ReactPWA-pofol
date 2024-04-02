@@ -1,8 +1,8 @@
 import React from 'react';
-import styles from './Hello.module.css';
+import styles from './MHello.module.css';
 import Lottie from "lottie-react";
-import aniSmile from "../../assets/lottie/aniSmile.json";
-import Eye from './Eye';
+import aniSmile from "../../../assets/lottie/aniSmile.json";
+
 
 type CornerPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 
@@ -11,11 +11,9 @@ const CornerSquare: React.FC<{ position: CornerPosition }> = ({ position }) => (
 );
 
 
-interface HelloProps {
-    isSelected: string; // 여기에 isSelected prop 추가
-}
 
-const Hello: React.FC<HelloProps> = ({ isSelected }) => {
+
+const MHello = () => {
     // 컴포넌트 로직
     return (
         <div className={styles.container}>
@@ -31,8 +29,7 @@ const Hello: React.FC<HelloProps> = ({ isSelected }) => {
 
                 <div className={styles.sub}>
                     <div className={styles.subBox}>
-                        <p className={styles.subText}>{isSelected}</p>
-                        <Eye />
+                        <p className={styles.subText}>안녕하세요, 디자이너 나영 포트폴리오 사이트입니다. 편하게 둘러보세요!</p>
                     </div>
                 </div>
             </div>
@@ -41,4 +38,4 @@ const Hello: React.FC<HelloProps> = ({ isSelected }) => {
 }
 
 
-export default Hello;
+export default MHello;

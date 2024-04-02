@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 interface TabProps { isSelected: boolean; }
 
+
 const InstagramSVG = ({ fill = "none" }) => {
     return (
         <svg width="48" height="48" viewBox="0 0 48 48" fill={fill} xmlns="http://www.w3.org/2000/svg">
@@ -43,18 +44,42 @@ const LinkSNS = () => {
     return (
         <Container>
             <Tab hoverStyle={1} isSelected={activeTab === '1'} onMouseEnter={() => setIsSelected('1')} onMouseLeave={() => setIsSelected('')} style={{ borderRight: isSelected === '1' ? '' : '1px dashed #343434' }}>
-                <InstagramSVG fill={isSelected === '1' ? "#000000" : "#454545"} />
+                <ResizeWrap>
+                    <InstagramSVG fill={isSelected === '1' ? "#000000" : "#454545"} />
+                </ResizeWrap>
             </Tab>
             <Tab hoverStyle={2} isSelected={activeTab === '2'} onMouseEnter={() => setIsSelected('2')} onMouseLeave={() => setIsSelected('')}>
-                <MailSVG fill={isSelected === '2' ? "#000000" : "#454545"} />
+                <ResizeWrap>
+                    <MailSVG fill={isSelected === '2' ? "#000000" : "#454545"} />
+                </ResizeWrap>
             </Tab>
             <Tab hoverStyle={3} isSelected={activeTab === '3'} onMouseEnter={() => setIsSelected('3')} onMouseLeave={() => setIsSelected('')} style={{ borderLeft: isSelected === '3' ? '' : '1px dashed #343434' }}>
-                <HomeSVG fill={isSelected === '3' ? "#000000" : "#454545"} />
+                <ResizeWrap>
+                    <HomeSVG fill={isSelected === '3' ? "#000000" : "#454545"} />
+                </ResizeWrap>
             </Tab>
         </Container>
     );
 }
 
+const ResizeWrap = styled.div`
+    transform: scale(1.4);
+    @media only screen and (max-width: 1700px) {
+        transform: scale(1);
+    }
+    @media only screen and (max-width: 1400px) {
+        transform: scale(0.9);
+    }
+    @media only screen and (max-width: 1200px) {
+        transform: scale(0.8);
+    }
+    @media only screen and (max-width: 991px) {
+        transform: scale(0.5);
+    }
+    @media only screen and (max-width: 767px) {
+        transform: scale(0.5);
+    }
+`
 
 
 
@@ -64,7 +89,10 @@ const Container = styled.div`
     height: 100%;
     background-color: #7A7A7A;
     position: relative;
-    border-radius: 15px;
+    border-radius: 30px;
+    @media only screen and (max-width: 991px) {
+            border-radius: 15px;
+    }
     align-items: center;
     justify-content: center;
 `;
@@ -89,8 +117,12 @@ const Tab = styled.div<TabProps & { hoverStyle: number }>`
     ${({ hoverStyle, isSelected }) => hoverStyle === 1 && `
       &:hover {
         border: 2px solid #3CADFF;
-        border-top-left-radius: 15px;
-        border-bottom-left-radius: 15px;
+        border-top-left-radius: 30px;
+        border-bottom-left-radius: 30px;
+        @media only screen and (max-width: 991px) {
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+        }
       }
     `}
 
@@ -104,8 +136,12 @@ const Tab = styled.div<TabProps & { hoverStyle: number }>`
     ${({ hoverStyle, isSelected }) => hoverStyle === 3 && `
       &:hover {
         border: 2px solid #3CADFF;
-        border-top-right-radius: 15px;
-        border-bottom-right-radius: 15px;
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 30px;
+        @media only screen and (max-width: 991px) {
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+        }
       }
     `}
 `;
