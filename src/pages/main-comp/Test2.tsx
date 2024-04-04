@@ -1,26 +1,22 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import MTicket from "./mobile-comp/MTicket";
+import styles from '../../testsrc/toggleMenu.module.css';
 
 const Test2 = () => {
+
     return (
         <Container>
-            <MTicket />
+            dfs
         </Container>
     );
-}
+};
 
 const Container = styled.div`
-    display: flex;
-    width: 900px;
-    height: 250px;
-    align-items: center;
-    justify-content: center;
-`;
-
-const TestTxt = styled.div`
-    font-size: 10rem;
-    color: #ffffff;
+  /*display: flex;
+  width: 900px;
+  height: 250px;
+  align-items: center;
+  justify-content: center;*/
 `;
 
 export default Test2;
