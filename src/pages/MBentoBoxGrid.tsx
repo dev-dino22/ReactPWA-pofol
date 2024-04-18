@@ -62,6 +62,7 @@ const MBentoBoxGrid = () => {
         height: window.innerHeight,
     });
 
+    // 브라우저 창의 크기 변화를 감지해 상태를 업데이트할 수 있게 resize 이벤트 추가
     useEffect(() => {
         const handleResize = () => {
             setWindowSize({ width: window.innerWidth, height: window.innerHeight });

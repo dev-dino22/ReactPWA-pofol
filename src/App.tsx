@@ -8,22 +8,28 @@ import BentoBoxGrid from './pages/BentoBoxGrid';
 import Test from './pages/Test';
 import NavMenu from './assets/components/NavMenu';
 import Test2 from './pages/main-comp/Test2';
+import SignInUI from './pages/SignInUI';
+import PortfolioUI from './pages/portfolio-comp/PortfolioUI';
+import { NavMenuProvider } from './context/NavMenuContext';
 
 function App() {
   return (
     <Router>
-      <div>
-        <NavMenu />
+      <NavMenuProvider>
+        <div>
+          <NavMenu />
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/bento" element={<BentoBoxGrid />} />
+            <Route path="/test" element={<Test />} />
+            <Route path="*" element={<NotFound />} />
+            <Route path="/test2" element={<Test2 />} />
+            <Route path="/sign" element={<SignInUI />} />
+            <Route path="/portfolio" element={<PortfolioUI />} />
+          </Routes>
 
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/bento" element={<BentoBoxGrid />} />
-          <Route path="/test" element={<Test />} />
-          <Route path="*" element={<NotFound />} />
-          <Route path="/test2" element={<Test2 />} />
-        </Routes>
-
-      </div>
+        </div>
+      </NavMenuProvider>
     </Router>
   );
 }

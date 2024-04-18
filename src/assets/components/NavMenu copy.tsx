@@ -123,6 +123,59 @@ const HamContainer = styled.span<IHam>`
 const NavMenu = () => {
     const navigate = useNavigate();
     const { menuHeight, setMenuHeight } = useContext(NavMenuContext);
+    const [height, setHeight] = useState(80); // 초기 높이 설정
+    const [newHeight, setNewHeight] = useState(80);
+    const [windowSize, setWindowSize] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight,
+    });
+
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+        console.log('newHeight, height, menuHeight: ', newHeight, height, menuHeight);
+    }, [windowSize]);
+    /*
+        useEffect(() => {
+            // newHeight가 변경될 때마다 height를 업데이트합니다.
+            if (newHeight !== height) {
+                setHeight(newHeight);
+                console.log('newHeight 업데이트:', newHeight);
+            }
+        }, [newHeight]);
+    
+        useEffect(() => {
+            // height가 변경될 때마다 menuHeight를 업데이트합니다.
+            if (height !== menuHeight) {
+                setMenuHeight(height);
+                console.log('menuHeight 업데이트:', height);
+            }
+        }, [height]);
+    
+        useEffect(() => {
+            // 모든 관련 상태의 최신 값을 로깅합니다.
+            console.log('newHeight, height, menuHeight: ', newHeight, height, menuHeight);
+        }, [newHeight, height, menuHeight]);*/
+
+
+    /*useEffect(() => {
+        if (newHeight !== height) {
+            setHeight(newHeight);
+            setMenuHeight(newHeight);
+            console.log('menuHeight 업데이트:', newHeight);
+        }
+    }, [newHeight]);
+
+    useEffect(() => {
+        console.log('menuHeight: ', menuHeight)
+        console.log('newHeight: ', newHeight)
+    }, [{ windowSize, menuHeight }])*/
 
     return (
         <Container height={menuHeight}>

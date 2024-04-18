@@ -10,6 +10,7 @@ import LinkSNS from './main-comp/LinkSNS';
 import InfoTXT from './main-comp/InfoTXT';
 import PhotoNayoung from './main-comp/PhotoNayoung';
 import Ticket from './main-comp/Ticket';
+import { useNavigate } from 'react-router-dom';
 
 //////////////  Style 컴포넌트들 시작 /////////////////////
 const Container = styled.div`
@@ -56,6 +57,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 ////////// 메인 컴포넌트 작성 시작 ///////////
 const BentoBoxGrid = () => {
+    const navigate = useNavigate();
     const [isSelected, setIsSelected] = useState<string>('Go to...');
     // 각 카드 마우스 호버 시 카드 이름 저장 핸들러
     const handleMouseEnter = (cardName: string) => { setIsSelected(cardName); };
@@ -153,7 +155,7 @@ const BentoBoxGrid = () => {
             <Card key="hello" >
                 <HelloCard isSelected={isSelected} />
             </Card>
-            <Card key="portfolio" style={{ cursor: 'pointer' }} onMouseEnter={() => handleMouseEnter('Portfolio')} onMouseLeave={handleMouseLeave}>
+            <Card key="portfolio" style={{ cursor: 'pointer' }} onMouseEnter={() => handleMouseEnter('Portfolio')} onMouseLeave={handleMouseLeave} onClick={() => navigate('/portfolio')}>
                 <PortfolioCard />
             </Card>
             <Card key="sns" style={{ cursor: 'pointer' }} onMouseEnter={() => handleMouseEnter('SNS Links')} onMouseLeave={handleMouseLeave}>
