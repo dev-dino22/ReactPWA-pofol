@@ -4,8 +4,14 @@ import { useNavMenu } from "../../context/NavMenuContext";
 import { gsap } from "gsap";
 import Draggable from "gsap/Draggable";
 import { ReactComponent as KeySVG } from "./key-fill.svg";
+import PortfolioLayout from "./PortfolioLayout";
+import mouseSVG from "./mouseSVG.svg";
 
-//////////////   인터페이스 정의 시작   //////////////////////////////
+/* 
+/*  스타일 컴포넌트 (CSS in JS) 로 작성된 페이지입니당. svg는 inline으로 작성.
+*/
+
+////////////////////////////   인터페이스 정의 시작   //////////////////////////////
 
 // 메뉴를 제외한 높이를 구하기위한 인터페이스
 interface IHeight {
@@ -24,18 +30,15 @@ interface IKeyRef {
     keyRef2: React.RefObject<SVGPathElement>;
     keyRef3: React.RefObject<SVGPathElement>;
 }
+////////////////////////////   인터페이스 정의 끝   ////////////////////////////////
 
-//////////////   인터페이스 정의 끝   ////////////////////////////////
 
-
-//////////////   GSAP Draggable 플러그인 권한 생성   /////////////////
-
+////////////////////////////   GSAP Draggable 플러그인 권한 생성   /////////////////
 gsap.registerPlugin(Draggable);
+////////////////////////////   GSAP Draggable 플러그인 권한 생성 끝   ///////////////
 
-//////////////   GSAP Draggable 플러그인 권한 생성 끝   ///////////////
 
-
-//////////////   스타일 컴포넌트 생성   ///////////////////////////////
+////////////////////////////   스타일 컴포넌트 생성   ///////////////////////////////
 
 const KeyboardSVG = styled.svg`
     width: 100%;
@@ -43,26 +46,166 @@ const KeyboardSVG = styled.svg`
     transform: scale(0.9);
     cursor: pointer;
 `
+const Container = styled.div<IHeight>`
+        width: 100%;
+        flex-grow: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        height: ${props => props.height}px;
+        overflow: hidden;
+        
+`;
 
-//////////////   스타일 컴포넌트 생성 끝   /////////////////////////////
+const Wrap = styled.div`
+    display: flex;
+    width: 92%;
+    height: 100%;
+    border-left: 1px solid #999999;
+    border-right: 1px solid #999999;
+    background-image: url('/image/portfolio/port-bg-img.jpg');
+    background-size: cover;
+    background-repeat: no-repeat; /* 이미지 반복 없음 */
+    background-attachment: fixed; /* 스크롤 시 이미지 고정 */
+`
+const Background = styled.div`
+    height: 100%; /* 전체 뷰포트 높이 */
+    width: 50%; /* 전체 너비 */
+    position: relative;
+    overflow: hidden;
+`
+const TitleWrap = styled.div`
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    align-items: flex-start;
+    position: relative;
+    height: 100%;
+    margin-left: 6%;
+    margin-top: 10%;
+`
+const Title = styled.p`
+    font-size: 12.8rem;
+    line-height: 12.8rem;
+    font-weight: 900;
+`
+const SubWrap = styled.div`
+    display: flex;
+    color: #ffffff;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin-left: 16px;
+`
+const Sub = styled.p`
+    font-size: 2.4rem;
+    line-height: 2.4rem;
+    font-weight: 300;
+`
+const HandDragInfo = styled.div`
+    position: absolute;
+    z-index: 7;
+    left: 10%;
+    bottom: 20%;
+    width: 10%;
+    animation: drag 2s ease-in-out infinite;
+    @keyframes drag {
+        0% {
+            left: 20%;
+            opacity: 0;
+        }
+        10%{
+            opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        100% {
+            left: 50%;
+            opacity: 0;
+        }
+    }
+    img {
+        
+    }
+`
+const HandWrap = styled.div<{ firstHand: boolean }>`
+    position: absolute;
+    bottom: 10%;
+    left: -50%;
+    width: 100%;
+    cursor: pointer;  // 마우스 포인터 변경
+    img {
+        width: 100%;
+        filter: ${props => props.firstHand ? 'blur(4px) contrast(150%) brightness(0.5)' : 'none'};
+        animation: ${props => props.firstHand ? 'fade 2s ease infinite' : 'none'};
+    };
+    @keyframes fade {
+        0%, 100% {
+            filter: blur(4px) contrast(150%) brightness(0.3);
+        }
+        50% {
+            filter: blur(4px) contrast(150%) brightness(0.8);
+        }
+    }
+`
+const HandPoint = styled.div`
+    width: 5%;
+    height: 16%;
+    position: absolute;
+    right: 0;
+    top: 40%;
+`
+const KeyboardWrap = styled.div`
+    position: absolute;
+    bottom: 0;
+    right: -1%;
+    width: 8%;
+`
+const KeyTitleWrap = styled.div`
+    display: flex;
+    position: absolute;
+    right: 10%;
+    bottom: 11%;
+    color: white;
+    font-size: 4.2rem;
+    font-weight: 600;
+    flex-direction: column;
+    align-items: flex-end;
+    line-height: 3.2rem;
+    height: 32%;
+    justify-content: space-between;
+`
+const LayoutWrap = styled.div`
+    height: 100%; /* 전체 뷰포트 높이 */
+    width: 50%; /* 전체 너비 */
+    @media only screen and (max-width: 991px) {
+        width: 100%;
+    }
+    position: relative;
+    background-color: #000000;
+`
+////////////////////////////   스타일 컴포넌트 생성 끝   /////////////////////////////
 
 
-//////////////   키보드 눌리는 GSAP 애니메이션   ///////////////////////
+////////////////////////////   키보드 눌리는 GSAP 애니메이션   ///////////////////////
 
 const animatePath = (ref: React.RefObject<SVGPathElement>) => {
-    gsap.to(ref.current, { x: 20, duration: 0.3, ease: "power1.inOut" })
-        .then(() => gsap.to(ref.current, { x: 0, duration: 0.2, ease: "power1.inOut" }));
-};
+    if (ref.current) {
+        gsap.to(ref.current, { x: 20, duration: 0.3, ease: "power1.inOut", })
+            .then(() => gsap.to(ref.current, { x: 0, duration: 0.2, ease: "power1.inOut" }));
+    }
+}
 
-//////////////   키보드 눌리는 GSAP 애니메이션 끝   /////////////////////
+////////////////////////////   키보드 눌리는 GSAP 애니메이션 끝   /////////////////////
 
 
-//////////////   키보드 컴포넌트   ///////////////////////////////////
+////////////////////////////   키보드 컴포넌트   ///////////////////////////////////
 /* 각 키의 현재 상태를 추적하고 click EventLinstner 생성 
 /* 키보드의 SVG 렌더링. inline SVG.
-/* SVG 옆에 텍스트가 출력되고 해당 텍스트가 이미지처럼 반응형으로 되도록 relative로 감싸줌
-/*
-*/
+/* SVG 옆에 텍스트가 출력되고 해당 텍스트가 이미지처럼 반응형으로 되도록 relative로 감싸줌 */
 
 const KeyboardComp: React.FC<IKeyRef> = ({ keyRef1, keyRef2, keyRef3 }) => {
     /*const keyRef1 = useRef<SVGPathElement>(null); // `<path>`에 대한 참조
@@ -72,25 +215,8 @@ const KeyboardComp: React.FC<IKeyRef> = ({ keyRef1, keyRef2, keyRef3 }) => {
     const [selectedKey, setSelectedKey] = useState<string | null>(null);
 
 
-    useEffect(() => {
-        const key1 = keyRef1.current;
-        const key2 = keyRef2.current;
-        const key3 = keyRef3.current;
 
-        const clickHandler1 = () => { setSelectedKey('key1'); animatePath(keyRef1); };
-        const clickHandler2 = () => { setSelectedKey('key2'); animatePath(keyRef2); };
-        const clickHandler3 = () => { setSelectedKey('key3'); animatePath(keyRef3); };
 
-        if (key1) key1.addEventListener('click', clickHandler1);
-        if (key2) key2.addEventListener('click', clickHandler2);
-        if (key3) key3.addEventListener('click', clickHandler3);
-
-        return () => {
-            if (key1) key1.removeEventListener('click', clickHandler1);
-            if (key2) key2.removeEventListener('click', clickHandler2);
-            if (key3) key3.removeEventListener('click', clickHandler3);
-        };
-    }, []);
 
 
 
@@ -116,18 +242,23 @@ const KeyboardComp: React.FC<IKeyRef> = ({ keyRef1, keyRef2, keyRef3 }) => {
                     </linearGradient>
                 </defs>
             </KeyboardSVG>
-            <p style={{ fontWeight: '600', fontSize: '4.6rem', position: 'absolute', top: '23%', left: '-100%', transform: 'translate(-50%, -50%)', color: 'white' }}>
-                test1
+            <p style={{ fontWeight: '600', fontSize: '4.6rem', position: 'absolute', top: '23%', left: '-100%', transform: 'translate(-50%, -50%)', color: '#ffffffa6' }}>
+                UX/UI
             </p>
-            <p style={{ fontWeight: '600', fontSize: '4.6rem', position: 'absolute', top: '50%', left: '-100%', transform: 'translate(-50%, -50%)', color: 'white' }}>
-                test2
+            <p style={{ fontWeight: '600', fontSize: '4.6rem', position: 'absolute', top: '50%', left: '-100%', transform: 'translate(-50%, -50%)', color: '#ffffffa6' }}>
+                Video
             </p>
-            <p style={{ fontWeight: '600', fontSize: '4.6rem', position: 'absolute', top: '75%', left: '-100%', transform: 'translate(-50%, -50%)', color: 'white' }}>
-                test3
+            <p style={{ fontWeight: '600', fontSize: '4.6rem', position: 'absolute', top: '75%', left: '-100%', transform: 'translate(-50%, -50%)', color: '#ffffffa6' }}>
+                Dev
             </p>
         </div>
     )
 }
+
+////////////////////////////   키보드 컴포넌트 끝   /////////////////////////////////
+
+
+////////////////////////////   현재 페이지 메인 컴포넌트   ////////////////////////////
 
 const PortfolioUI = () => {
     const { menuHeight } = useNavMenu();
@@ -136,15 +267,19 @@ const PortfolioUI = () => {
         height: window.innerHeight,
     });
     const [Height, setHeight] = useState(80); // 초기 높이 설정
+    const [isMobile, setIsMobile] = useState<boolean>(false);
 
     const handRef = useRef<HTMLDivElement>(null);
     const handPoint = useRef<HTMLDivElement>(null);
+    const [firstHand, setFirstHand] = useState<boolean>(true);
 
     const keyRef1 = useRef<SVGPathElement>(null); // `<path>`에 대한 참조
     const keyRef2 = useRef<SVGPathElement>(null);
     const keyRef3 = useRef<SVGPathElement>(null);
 
     const [initialPos, setInitialPos] = useState<Position>({ x: 0, y: 0 });
+
+    const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
 
 
     // useEffect를 사용하여 창 크기가 변경될 때마다 windowSize 상태를 업데이트
@@ -164,12 +299,60 @@ const PortfolioUI = () => {
         setHeight(newHeight);
     }, [windowSize, menuHeight]);
 
+    useEffect(() => {
+        if (windowSize.width < 991) {
+            setIsMobile(true);
+        } else if (windowSize.width >= 991) {
+            setIsMobile(false);
+        }
+    }, [windowSize])
+
+    // 어떤 키를 선택했는지 상태 배열에 추가하는 함수
+    const toggleKeySelection = (keyName: string) => {
+        setSelectedKeys(prevKeys => {
+            const index = prevKeys.indexOf(keyName);
+            if (index > -1) {
+                // 이미 존재하면 제거
+                return prevKeys.filter(k => k !== keyName);
+            } else {
+                // 존재하지 않으면 추가
+                return [...prevKeys, keyName];
+            }
+        });
+    };
+
+    // 각 키에 대한 클릭 이벤트 핸들러를 설정합니다.
+    useEffect(() => {
+        const refs = [keyRef1, keyRef2, keyRef3];
+        const handlers = refs.map((ref, idx) => {
+            return () => {
+                const keyName = `keyRef${idx + 1}`;
+                toggleKeySelection(keyName);
+                animatePath(ref);
+            };
+        });
+
+        refs.forEach((ref, idx) => {
+            ref.current?.addEventListener('click', handlers[idx]);
+        });
+
+        return () => {
+            refs.forEach((ref, idx) => {
+                ref.current?.removeEventListener('click', handlers[idx]);
+            });
+        };
+    }, []); // 빈 의존성 배열을 사용하여 컴포넌트 마운트 시에만 이벤트 리스너를 설정
+
+    useEffect(() => {
+        console.log(selectedKeys);
+    }, [selectedKeys]);
+
 
 
     useEffect(() => {
         if (handRef.current && handPoint.current) {
             // 초기 위치를 저장합니다.
-            const { left, top } = handPoint.current.getBoundingClientRect();
+            const { left, top } = handRef.current.getBoundingClientRect();
             setInitialPos({ x: left, y: top });
 
             // Draggable 인스턴스를 생성합니다.
@@ -187,12 +370,25 @@ const PortfolioUI = () => {
                     });
                 },
                 onDrag: function () {
-                    // 드래그하는 동안 keyRef3와의 충돌 검사
-                    if (this.hitTest(keyRef3.current, "50%")) {
-                        animatePath(keyRef3);
-                    }
-                },
+                    setFirstHand(false);
+                    [keyRef1, keyRef2, keyRef3].forEach((ref, idx) => {
+                        const keyName = `keyRef${idx + 1}`;
+                        if (ref.current && handPoint.current) {
+                            const keyRect = ref.current.getBoundingClientRect();
+                            const handPointRect = handPoint.current.getBoundingClientRect();
 
+                            // handPointRect와 keyRect를 사용한 충돌 검사
+                            if (handPointRect.right > keyRect.left &&
+                                handPointRect.left < keyRect.right &&
+                                handPointRect.bottom > keyRect.top &&
+                                handPointRect.top < keyRect.bottom) {
+                                animatePath(ref);
+                                toggleKeySelection(keyName);
+                                this.endDrag(); // 충돌이 일어나면 드래그 종료
+                            }
+                        }
+                    });
+                },
             });
 
             return () => {
@@ -200,17 +396,16 @@ const PortfolioUI = () => {
                 draggable[0].kill();
             };
         }
-    }, [handRef]); // 의존성 배열에서 initialPos를 제거
-
-
-
-
+    }, []);
 
 
     return (
         <Container height={Height} className=".container">
             <Wrap>
-                <Background>
+                {!isMobile && <Background>
+                    {firstHand && <HandDragInfo>
+                        <img src={mouseSVG}></img>
+                    </HandDragInfo>}
                     <TitleWrap>
                         <Title>Works.</Title>
                         <SubWrap>
@@ -222,6 +417,7 @@ const PortfolioUI = () => {
                     <HandWrap
                         ref={handRef}
                         className="flair2"
+                        firstHand={firstHand}
                     >
                         <HandPoint ref={handPoint} />
                         <img src="/image/portfolio/hand2.png" />
@@ -230,136 +426,17 @@ const PortfolioUI = () => {
                         <KeyboardComp keyRef1={keyRef1} keyRef2={keyRef2} keyRef3={keyRef3} />
                     </KeyboardWrap>
 
-                </Background>
-                <LayoutWrap></LayoutWrap>
+                </Background>}
+                <LayoutWrap>
+                    <PortfolioLayout selectedKeys={selectedKeys} toggleKeySelection={toggleKeySelection} />
+                </LayoutWrap>
             </Wrap>
         </Container>
     )
 };
 
-const Container = styled.div<IHeight>`
-        width: 100%;
-        flex-grow: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        height: ${props => props.height}px;
-        overflow-y: hidden;
-        
-`;
+////////////////////////////   현재 페이지 메인 컴포넌트 끝   //////////////////////////
 
-const Wrap = styled.div`
-    display: flex;
-    width: 92%;
-    height: 100%;
-    border-left: 1px solid #999999;
-    border-right: 1px solid #999999;
-    background-image: url('/image/portfolio/port-bg-img.jpg');
-    background-size: cover;
-    background-repeat: no-repeat; /* 이미지 반복 없음 */
-    background-attachment: fixed; /* 스크롤 시 이미지 고정 */
-`
 
-const Background = styled.div`
-    height: 100%; /* 전체 뷰포트 높이 */
-    width: 50%; /* 전체 너비 */
-    position: relative;
-    overflow: hidden;
-`;
-
-const TitleWrap = styled.div`
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    align-content: flex-start;
-    align-items: flex-start;
-    position: relative;
-    height: 100%;
-    margin-left: 6%;
-    margin-top: 10%;
-`
-
-const Title = styled.p`
-    font-size: 12.8rem;
-    line-height: 12.8rem;
-    font-weight: 900;
-`
-const SubWrap = styled.div`
-    display: flex;
-    color: #ffffff;
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-    margin-left: 16px;
-`
-const Sub = styled.p`
-    font-size: 2.4rem;
-    line-height: 2.4rem;
-    font-weight: 300;
-`
-
-const DragBox = styled.div`
-    position: relative;
-    width: 90%;
-    height: 100%;
-    ;
-`
-const HandWrap = styled.div`
-    position: absolute;
-    bottom: 10%;
-    left: -50%;
-    width: 100%;
-    cursor: pointer;  // 마우스 포인터 변경
-    img {
-        width: 100%;
-    }
-`
-
-const HandPoint = styled.div`
-    width: 10%;
-    height: 20%;
-    border-radius: 300px;
-    background-color: black;
-    color: white;
-    position: absolute;
-    right: 0;
-    top: 36%;
-
-`
-
-const KeyboardWrap = styled.div`
-    position: absolute;
-    bottom: 0;
-    right: -1%;
-    width: 8%;
-`
-
-const KeyTitleWrap = styled.div`
-    display: flex;
-    position: absolute;
-    right: 10%;
-    bottom: 11%;
-    color: white;
-    font-size: 4.2rem;
-    font-weight: 600;
-    flex-direction: column;
-    align-items: flex-end;
-    line-height: 3.2rem;
-    height: 32%;
-    justify-content: space-between;
-`
-
-const LayoutWrap = styled.div`
-    height: 100%; /* 전체 뷰포트 높이 */
-    width: 50%; /* 전체 너비 */
-    position: relative;
-    background-color: #000000;
-`
-
-/*const FilterContainer = styled.div`
-    display: flex;
-    width: 100%;
-`*/
 
 export default PortfolioUI;

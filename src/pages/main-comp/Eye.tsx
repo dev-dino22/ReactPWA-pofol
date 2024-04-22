@@ -41,7 +41,8 @@ const Eye = () => {
     const [transform, setTransform] = useState('');
     const originRef = useRef<HTMLButtonElement>(null);
 
-    const onClick = () => setShowEye(prev => !prev);
+    const handleMouseEnter = () => setShowEye(false);
+    const handleMouseLeave = () => setShowEye(true);
 
     useEffect(() => {
         const onMouseMove = (e: MouseEvent) => {
@@ -84,7 +85,7 @@ const Eye = () => {
 
     return (
         <Container>
-            <Button onClick={onClick} ref={originRef}>
+            <Button onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} ref={originRef}>
                 {showEye ? (
                     <>
                         <EyelineSVG />

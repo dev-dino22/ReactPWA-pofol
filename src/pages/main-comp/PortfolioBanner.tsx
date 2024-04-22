@@ -36,7 +36,7 @@ const Container = styled.div`
     border-radius: 30px;
     @media only screen and (max-width: 991px) {
         border-radius: 15px;
-    }
+    };
 `;
 
 const ImgWrap = styled.div<ImgWrapProps>`
@@ -46,6 +46,9 @@ const ImgWrap = styled.div<ImgWrapProps>`
     width: 100%;
     height: 100%;
     left: -112px;
+    @media only screen and (min-width: 2000px) {
+            left: -10%;
+    };
     position: relative;
     top: 10px;
     transition: transform 0.5s ease; // transform 속성에 대한 부드러운 전환 효과 적용
@@ -61,6 +64,9 @@ const ImgWrap = styled.div<ImgWrapProps>`
         display: flex;
         justify-content: flex-start;
         width: 100%;
+        @media only screen and (min-width: 2000px) {
+            width: 110%;
+        };
         object-fit: cover;
         animation: float 5s ease-in-out infinite;
     }

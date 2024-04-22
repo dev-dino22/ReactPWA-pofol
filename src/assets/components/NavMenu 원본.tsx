@@ -10,15 +10,8 @@ interface IContainerProps {
     height: number;  // height 프로퍼티를 명시적으로 정의
 }
 
-interface IBotProps {
-    height: number;
-    isChecked: boolean;
-}
-
-
 const Container = styled.div<IContainerProps>`
-    display: flex;
-    position: relative;
+     display: flex;
     width: 100%;
     border-bottom: 1px solid #ffffff;
     align-items: center;
@@ -26,7 +19,6 @@ const Container = styled.div<IContainerProps>`
     padding-left: 30px;
     padding-right: 30px;
     height: ${props => props.height}px; // 스타일 컴포넌트에서 높이 동적 설정
-    z-index: 99; 
 `
 
 const Logo = styled.span`
@@ -34,7 +26,6 @@ const Logo = styled.span`
     font-size: 2.4rem;
     font-weight: 900;
     cursor: pointer;
-    z-index: 99;
     
 `
 
@@ -46,67 +37,12 @@ const SignIn = styled.span`
     &:hover {
         text-decoration: underline;
     }
-    z-index: 99; 
-`
-const BotContainer = styled.div<IBotProps>`
-    position: absolute; 
-    bottom: 0;             
-    left: 0;      
-    width: ${props => props.isChecked ? '100%' : '0%'};  
-    height: ${props => props.height}px; // 메뉴 높이 제외한 바텀 높이
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 0;
-    background: rgba(0, 0, 0, 0.852);
-    transition: width 0.5s ease-in-out;
-    z-index: 10;
-    overflow: hidden;
-`
-const BotMenuListWrap = styled.div`
-    width: 100%;
-    height: 60%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: column;
-    padding-top: 2%;
-    padding-bottom: 2%;
-    p {
-        color: white;
-        font-size: 10rem;
-        font-weight: 300;
-        line-height: 10rem;
-        cursor: pointer;
-        &:hover {
-            border-bottom: 1px solid white;
-        }
-    }
-    border-bottom: 1px solid white;
-`
-const BotInfoWrap = styled.div`
-    width: 100%;
-    height: 40%;
-    background: rgba(0, 0, 0, 0.93);
-    display: flex;
-    padding: 2%;
-    align-items: center;
-    justify-content: center;
-    p{
-        color: white;
-        font-size: 3rem;
-        line-height: 3rem;
-        font-weight: 300;
-        padding: 2%;
-        border: 1px solid white;
-    }
 `
 
 
 
 
-///////////////////////////     컴포넌트 정의 시작      ////////////////////////
+///////////////////////////     스타일컴포넌트 정의 끝 /
 const HamburgerSVG = () => {
     const { isChecked, setIsChecked } = useContext(NavMenuContext);
     // `pathRefs`의 타입을 명시적으로 `SVGPathElement[] | null[]`로 설정
@@ -141,7 +77,6 @@ const HamburgerSVG = () => {
 }
 
 const HamContainer = styled.span<IHam>`
-    z-index: 99; // Ensure it's on top of other content
     background-color: none;
     cursor: pointer;
     position: relative;
@@ -189,64 +124,17 @@ const HamContainer = styled.span<IHam>`
         }
 `;
 
-
 const NavMenu = () => {
     const navigate = useNavigate();
-    const { menuHeight, setMenuHeight, isChecked, setIsChecked } = useContext(NavMenuContext);
-    const [windowSize, setWindowSize] = useState({
-        width: window.innerWidth,
-        height: window.innerHeight,
-    });
-
-    // 브라우저 창의 크기 변화를 감지해 상태를 업데이트할 수 있게 resize 이벤트 추가
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-        };
-
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    const getHeight = (menuHeight: number): number => {
-        const baseHeight = windowSize.height;
-        let calHeight = baseHeight - menuHeight;
-        console.log(calHeight);
-
-        return calHeight;
-    };
-
-    // rowHeight 상태 관리
-    const [Height, setHeight] = useState(getHeight(menuHeight));
-
-    // 화면 크기가 변경될 때마다 rowHeight 업데이트
-    useEffect(() => {
-        setHeight(getHeight(menuHeight));
-    }, [windowSize, menuHeight]);
-
-    const handlerNavigate = (url: string): void => {
-        setIsChecked(false)
-        navigate(url);
-    }
+    const { menuHeight, setMenuHeight } = useContext(NavMenuContext);
 
     return (
         <>
             <Container height={menuHeight}>
                 <HamburgerSVG />
-                <Logo onClick={() => handlerNavigate('/')}>Nayoung</Logo>
-                <SignIn onClick={() => handlerNavigate('/sign')}>Sign in</SignIn>
+                <Logo onClick={() => navigate('/')}>Nayoung</Logo>
+                <SignIn onClick={() => navigate('/sign')}>Sign in</SignIn>
             </Container>
-            <BotContainer isChecked={isChecked} height={Height}>
-                <BotMenuListWrap>
-                    <p onClick={() => handlerNavigate('/')}>Home</p>
-                    <p onClick={() => handlerNavigate('/portfolio')}>Works</p>
-                    <p>Contact</p>
-                    <p>Playground</p>
-                </BotMenuListWrap>
-                <BotInfoWrap>
-                    <p>포트폴리오 PDF 다운로드</p>
-                </BotInfoWrap>
-            </BotContainer >
         </>
     );
 }

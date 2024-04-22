@@ -92,7 +92,7 @@ const Container = styled.div`
     border-radius: 30px;
     @media only screen and (max-width: 991px) {
             border-radius: 15px;
-    }
+    };
     align-items: center;
     justify-content: center;
 `;

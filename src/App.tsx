@@ -11,6 +11,7 @@ import Test2 from './pages/main-comp/Test2';
 import SignInUI from './pages/SignInUI';
 import PortfolioUI from './pages/portfolio-comp/PortfolioUI';
 import { NavMenuProvider } from './context/NavMenuContext';
+import PortfolioDetailUI from './pages/portfolio-comp/detail/PortfolioDetailUI';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/test2" element={<Test2 />} />
             <Route path="/sign" element={<SignInUI />} />
             <Route path="/portfolio" element={<PortfolioUI />} />
+            <Route path="/portfolio/1" element={<PortfolioDetailUI />} />
           </Routes>
 
         </div>

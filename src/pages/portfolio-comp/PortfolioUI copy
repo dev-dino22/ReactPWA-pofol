@@ -98,7 +98,7 @@ const PortfolioUI = () => {
     const handRef = useRef<HTMLDivElement>(null);
     const [initialPos, setInitialPos] = useState<Position>({ x: 0, y: 0 });
 
-    const keyRef1 = useRef<SVGPathElement>(null); // `<path>`에 대한 참조
+    const keyRef1 = useRef<SVGPathElement>(null); // `<path`에 대한 참조
     const keyRef2 = useRef<SVGPathElement>(null);
     const keyRef3 = useRef<SVGPathElement>(null);
 

@@ -10,6 +10,12 @@ interface IContainerProps {
     height: number;  // height 프로퍼티를 명시적으로 정의
 }
 
+interface IBotProps {
+    height: number;
+    isChecked: boolean;
+}
+
+
 const Container = styled.div<IContainerProps>`
      display: flex;
     width: 100%;
@@ -38,9 +44,29 @@ const SignIn = styled.span`
         text-decoration: underline;
     }
 `
+const BotContainer = styled.div<IBotProps>`
+    position: absolute;  // Set to absolute
+    bottom: 0;              // Align to the top
+    left: 0;             // Align to the left
+    width: 100%;         // Take full width
+    height: ${props => props.height}px;       // Take full height
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.93); // Semi-transparent background
+    transform: translateX(${props => props.isChecked ? '0' : '100%'});
+    transition: all 0.3s ease-in-out; // Smooth transition for toggling
+    z-index: 1000; // Ensure it's on top of other content
+`
 
+
+
+
+///////////////////////////     컴포넌트 정의 시작      ////////////////////////
 const HamburgerSVG = () => {
-    const [isChecked, setIsChecked] = useState<boolean>(false);
+    const { isChecked, setIsChecked } = useContext(NavMenuContext);
     // `pathRefs`의 타입을 명시적으로 `SVGPathElement[] | null[]`로 설정
     const pathRefs = useRef<(SVGPathElement | null)[]>([]);
 
@@ -122,67 +148,49 @@ const HamContainer = styled.span<IHam>`
 
 const NavMenu = () => {
     const navigate = useNavigate();
-    const { menuHeight, setMenuHeight } = useContext(NavMenuContext);
-    const [height, setHeight] = useState(80); // 초기 높이 설정
-    const [newHeight, setNewHeight] = useState(80);
+    const { menuHeight, setMenuHeight, isChecked } = useContext(NavMenuContext);
     const [windowSize, setWindowSize] = useState({
         width: window.innerWidth,
         height: window.innerHeight,
     });
 
+    // 브라우저 창의 크기 변화를 감지해 상태를 업데이트할 수 있게 resize 이벤트 추가
     useEffect(() => {
         const handleResize = () => {
             setWindowSize({ width: window.innerWidth, height: window.innerHeight });
         };
+
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    const getHeight = (menuHeight: number): number => {
+        const baseHeight = windowSize.height;
+        let calHeight = baseHeight - menuHeight;
+        console.log(calHeight);
+
+        return calHeight;
+    };
+
+    // rowHeight 상태 관리
+    const [Height, setHeight] = useState(getHeight(menuHeight));
+
+    // 화면 크기가 변경될 때마다 rowHeight 업데이트
     useEffect(() => {
-        console.log('newHeight, height, menuHeight: ', newHeight, height, menuHeight);
-    }, [windowSize]);
-    /*
-        useEffect(() => {
-            // newHeight가 변경될 때마다 height를 업데이트합니다.
-            if (newHeight !== height) {
-                setHeight(newHeight);
-                console.log('newHeight 업데이트:', newHeight);
-            }
-        }, [newHeight]);
-    
-        useEffect(() => {
-            // height가 변경될 때마다 menuHeight를 업데이트합니다.
-            if (height !== menuHeight) {
-                setMenuHeight(height);
-                console.log('menuHeight 업데이트:', height);
-            }
-        }, [height]);
-    
-        useEffect(() => {
-            // 모든 관련 상태의 최신 값을 로깅합니다.
-            console.log('newHeight, height, menuHeight: ', newHeight, height, menuHeight);
-        }, [newHeight, height, menuHeight]);*/
-
-
-    /*useEffect(() => {
-        if (newHeight !== height) {
-            setHeight(newHeight);
-            setMenuHeight(newHeight);
-            console.log('menuHeight 업데이트:', newHeight);
-        }
-    }, [newHeight]);
-
-    useEffect(() => {
-        console.log('menuHeight: ', menuHeight)
-        console.log('newHeight: ', newHeight)
-    }, [{ windowSize, menuHeight }])*/
+        setHeight(getHeight(menuHeight));
+    }, [windowSize, menuHeight]);
 
     return (
-        <Container height={menuHeight}>
-            <HamburgerSVG />
-            <Logo onClick={() => navigate('/')}>Nayoung</Logo>
-            <SignIn onClick={() => navigate('/sign')}>Sign in</SignIn>
-        </Container>
+        <>
+            <Container height={menuHeight}>
+                <HamburgerSVG />
+                <Logo onClick={() => navigate('/')}>Nayoung</Logo>
+                <SignIn onClick={() => navigate('/sign')}>Sign in</SignIn>
+            </Container>
+            <BotContainer isChecked={isChecked} height={Height}>
+
+            </BotContainer >
+        </>
     );
 }
 

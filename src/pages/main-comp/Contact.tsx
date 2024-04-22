@@ -19,9 +19,6 @@ const Container = styled.div`
     @media only screen and (max-width: 991px) {
             border-radius: 15px;
     }
-    @media only screen and (min-width: 2000px) {
-            border-radius: 60px;
-    }
     border: solid 1px #fff;
     font-size: 9.4rem;
     font-weight: 100;
@@ -34,8 +31,8 @@ const Container = styled.div`
     color: #ffffff;
     transition: background-color 0.5s ease, color 0.5s ease;
     &:hover {
-        background-color: #ffffff; /* 호버 상태의 배경색 */
-    color: #000000; /* 호버 상태의 글자색 */
+        background-color: #ffffff;
+        color: #000000;
     }
 `;
 

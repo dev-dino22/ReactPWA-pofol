@@ -4,12 +4,16 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 interface NavMenuContextType {
     menuHeight: number;
     setMenuHeight: (height: number) => void;
+    isChecked: boolean; // 추가된 상태
+    setIsChecked: (checked: boolean) => void; // 상태를 변경하는 함수
 }
 
 // 기본 컨텍스트 값 설정
 const defaultState: NavMenuContextType = {
     menuHeight: 80,
-    setMenuHeight: () => { }
+    setMenuHeight: () => { },
+    isChecked: false, // 기본값 설정
+    setIsChecked: () => { } // 기본 함수 설정
 };
 
 // 컨텍스트 생성
@@ -23,6 +27,7 @@ interface NavMenuProviderProps {
 // Provider 컴포넌트
 export const NavMenuProvider: React.FC<NavMenuProviderProps> = ({ children }) => {
     const [menuHeight, setMenuHeight] = useState<number>(defaultState.menuHeight);
+    const [isChecked, setIsChecked] = useState<boolean>(defaultState.isChecked); // 상태 관리 추가
 
     useEffect(() => {
         const updateMenuHeight = () => {
@@ -45,7 +50,7 @@ export const NavMenuProvider: React.FC<NavMenuProviderProps> = ({ children }) =>
     }, []);
 
     return (
-        <NavMenuContext.Provider value={{ menuHeight, setMenuHeight }}>
+        <NavMenuContext.Provider value={{ menuHeight, setMenuHeight, isChecked, setIsChecked }}>
             {children}
         </NavMenuContext.Provider>
     );
