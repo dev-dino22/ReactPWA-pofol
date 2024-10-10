@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 // ImgWrapProps 인터페이스 정의
@@ -8,20 +9,21 @@ interface ImgWrapProps {
 
 const PortfolioBanner = () => {
     const [isHovered, setIsHovered] = useState<boolean>(false);
-
+    const navigate = useNavigate();
     return (
         <Container
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            onClick={() => navigate("/portfolio")}
         >
             <ImgWrap isHovered={isHovered}>
                 <img src="./image/main/keyboard-glass.png" alt="Keyboard and Glass" />
             </ImgWrap>
             <TextWrap>
-                <p>Motion graphic</p>
-                <p>UI/UX design</p>
-                <p>Web/App design</p>
-                <p>Front-end development</p>
+                <p onClick={(e) => { e.stopPropagation(); navigate("/portfolio", { state: { filterKey: 'keyRef2' } }) }}>Video Design</p>
+                <p onClick={(e) => { e.stopPropagation(); navigate("/portfolio", { state: { filterKey: 'keyRef1' } }) }}>UI/UX design</p>
+                <p onClick={(e) => { e.stopPropagation(); navigate("/portfolio", { state: { filterKey: 'keyRef3' } }) }}>Web/App design</p>
+                <p onClick={(e) => { e.stopPropagation(); navigate("/portfolio", { state: { filterKey: 'keyRef3' } }) }}>Front-end development</p>
             </TextWrap>
         </Container>
     );

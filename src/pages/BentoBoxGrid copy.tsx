@@ -150,7 +150,7 @@ const BentoBoxGrid = () => {
                 <Card key="hello" >
                     <HelloCard isSelected={isSelected} />
                 </Card>
-                <Card key="portfolio" style={{ cursor: 'pointer' }} onMouseEnter={() => handleMouseEnter('Portfolio')} onMouseLeave={handleMouseLeave}>
+                <Card key="portfolio" style={{ cursor: 'pointer' }} onMouseEnter={() => handleMouseEnter('Portfolio')} onMouseLeave={handleMouseLeave} onClick={() => navigate('/portfolio')}>
                     <PortfolioCard />
                 </Card>
                 <Card key="sns" style={{ cursor: 'pointer' }} onMouseEnter={() => handleMouseEnter('SNS Links')} onMouseLeave={handleMouseLeave}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useNavMenu } from "../../context/NavMenuContext";
 import { gsap } from "gsap";
@@ -6,6 +6,7 @@ import Draggable from "gsap/Draggable";
 import { ReactComponent as KeySVG } from "./key-fill.svg";
 import PortfolioLayout from "./PortfolioLayout";
 import mouseSVG from "./mouseSVG.svg";
+import { useNavigate, useLocation } from "react-router-dom";
 
 /* 
 /*  스타일 컴포넌트 (CSS in JS) 로 작성된 페이지입니당. svg는 inline으로 작성.
@@ -110,16 +111,17 @@ const HandDragInfo = styled.div`
     left: 10%;
     bottom: 20%;
     width: 10%;
-    animation: drag 2s ease-in-out infinite;
+    animation: drag 3s ease-in-out infinite;
+    pointer-events: none;
     @keyframes drag {
         0% {
             left: 20%;
             opacity: 0;
         }
-        10%{
+        30%{
             opacity: 1;
         }
-        90% {
+        80% {
             opacity: 1;
         }
         100% {
@@ -147,7 +149,7 @@ const HandWrap = styled.div<{ firstHand: boolean }>`
             filter: blur(4px) contrast(150%) brightness(0.3);
         }
         50% {
-            filter: blur(4px) contrast(150%) brightness(0.8);
+            filter: blur(2px) contrast(150%) brightness(0.8);
         }
     }
 `
@@ -214,12 +216,6 @@ const KeyboardComp: React.FC<IKeyRef> = ({ keyRef1, keyRef2, keyRef3 }) => {
 
     const [selectedKey, setSelectedKey] = useState<string | null>(null);
 
-
-
-
-
-
-
     return (
         <div style={{ position: 'relative' }}>
             <KeyboardSVG viewBox="0 0 73 558" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -261,6 +257,8 @@ const KeyboardComp: React.FC<IKeyRef> = ({ keyRef1, keyRef2, keyRef3 }) => {
 ////////////////////////////   현재 페이지 메인 컴포넌트   ////////////////////////////
 
 const PortfolioUI = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
     const { menuHeight } = useNavMenu();
     const [windowSize, setWindowSize] = useState({
         width: window.innerWidth,
@@ -281,6 +279,12 @@ const PortfolioUI = () => {
 
     const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
 
+    // 페이지 로드 시 전달된 상태를 기반으로 필터 설정
+    useEffect(() => {
+        if (location.state?.filterKey) {
+            setSelectedKeys([location.state.filterKey]);
+        }
+    }, [location.state]);
 
     // useEffect를 사용하여 창 크기가 변경될 때마다 windowSize 상태를 업데이트
     useEffect(() => {
@@ -347,8 +351,6 @@ const PortfolioUI = () => {
         console.log(selectedKeys);
     }, [selectedKeys]);
 
-
-
     useEffect(() => {
         if (handRef.current && handPoint.current) {
             // 초기 위치를 저장합니다.
@@ -398,7 +400,6 @@ const PortfolioUI = () => {
         }
     }, []);
 
-
     return (
         <Container height={Height} className=".container">
             <Wrap>
@@ -409,7 +410,7 @@ const PortfolioUI = () => {
                     <TitleWrap>
                         <Title>Works.</Title>
                         <SubWrap>
-                            <Sub>You can’t use up creativity.</Sub>
+                            <Sub>You can't use up creativity.</Sub>
                             <Sub>The more you use,</Sub>
                             <Sub>the more you have</Sub>
                         </SubWrap>
@@ -425,7 +426,6 @@ const PortfolioUI = () => {
                     <KeyboardWrap>
                         <KeyboardComp keyRef1={keyRef1} keyRef2={keyRef2} keyRef3={keyRef3} />
                     </KeyboardWrap>
-
                 </Background>}
                 <LayoutWrap>
                     <PortfolioLayout selectedKeys={selectedKeys} toggleKeySelection={toggleKeySelection} />
@@ -436,7 +436,5 @@ const PortfolioUI = () => {
 };
 
 ////////////////////////////   현재 페이지 메인 컴포넌트 끝   //////////////////////////
-
-
 
 export default PortfolioUI;

@@ -1,7 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import GridLayout, { Responsive, WidthProvider } from 'react-grid-layout';
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { gsap } from "gsap";
+
+
+interface PortfolioLayoutProps {
+    selectedKeys: string[]; // 선택된 키 배열
+    toggleKeySelection: (keyName: string) => void;
+}
+
+interface Project {
+    id: string;
+    name: string;
+    category: string;
+    icon?: string;
+    iconColor?: string;
+}
+
+const CircleMask = styled.div<{ iconColor: string }>`
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 100px;
+  height: 100px;
+  background-color: ${props => props.iconColor || '#f0b733'};
+  border-radius: 30px;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  z-index: 999;
+`;
 
 const Container = styled.div`
     width: 100%;
@@ -10,7 +38,7 @@ const Container = styled.div`
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    backdrop-filter: blur(10px);
+    //backdrop-filter: blur(10px);
     animation: float 8s ease infinite;
     @keyframes float {
         0%, 100% {
@@ -108,6 +136,7 @@ const DirectIcon = styled.div<{ icon: string }>`
     margin-bottom: 16px;
     background-color: ${props => props.icon ? 'transparent' : '#fff'};
     cursor: pointer;
+    z-index: 999;
 
     @media only screen and (min-width: 3840px) {
         width: 120px;
@@ -143,20 +172,10 @@ const DirectText = styled.p`
 //////////  ResponsiveGridLayout 정의 /////////////
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-interface PortfolioLayoutProps {
-    selectedKeys: string[]; // 선택된 키 배열
-    toggleKeySelection: (keyName: string) => void;
-}
 
-interface Project {
-    id: string;
-    name: string;
-    category: string;
-    icon?: string;
-}
 
 const projects: Project[] = [
-    { id: 'kb', name: 'KB금융그룹', category: 'keyRef1', icon: './image/portfolio/kb/kb-icon.png' },
+    { id: 'kb', name: 'KB금융그룹', category: 'keyRef1', icon: './image/portfolio/kb/kb-icon.png', iconColor: '#f0b733' },
     { id: 'thezero', name: '잔반 관리 플랫폼', category: 'keyRef2', icon: './image/portfolio/thezero/thezero-icon.png' },
     { id: 'nhncrossent', name: 'NHN Crossent', category: 'keyRef2', icon: './image/portfolio/NHNcrossent/NHNcrossent-icon.png' },
     { id: 'paju', name: '파주시', category: 'keyRef2', icon: './image/portfolio/paju/paju-icon.png' },
@@ -165,7 +184,6 @@ const projects: Project[] = [
     { id: 'zarang', name: '자랑질(가제)', category: 'keyRef3' },
     { id: 'personal', name: '개인 프로젝트', category: 'keyRef3' },
     { id: 'student', name: '학생 과제', category: 'keyRef2' },
-
 ];
 
 const filters = [
@@ -194,9 +212,48 @@ const PortfolioLayout: React.FC<PortfolioLayoutProps> = ({ selectedKeys, toggleK
         })),
     };
 
+    const circleRef = useRef(null); // 원형 마스크용 ref
+
+    const handleIconClick = (e: React.MouseEvent<HTMLDivElement>, projectId: string, projectColor: string) => {
+        if (!circleRef.current) return;
+
+        // Get the bounding rect of the icon
+        const iconRef = e.currentTarget;
+        const rect = iconRef.getBoundingClientRect();
+
+        // 화면 중앙으로 이동하기 위한 계산
+        const centerX = window.innerWidth / 2 - iconRef.offsetWidth / 2;
+        const centerY = window.innerHeight / 2 - iconRef.offsetHeight / 2;
+
+        const offsetX = centerX - rect.left;
+        const offsetY = centerY - rect.top;
+
+        gsap.to(iconRef, {
+            x: offsetX,
+            y: offsetY,
+            scale: 3,
+            duration: 0.1,
+            ease: "power2.out",  // 부드러운 애니메이션 효과
+            onComplete: () => {
+                gsap.to(circleRef.current, {
+                    left: rect.left + rect.width / 2,
+                    top: rect.top + rect.height / 2,
+                    scale: 40, // 충분히 크게 확장하여 화면을 덮도록 설정
+                    backgroundColor: projectColor,
+                    duration: 1,
+                    ease: "power3.out",
+                    onComplete: () => navigate(`/portfolio/${projectId}`)
+                });
+            }
+        });
+
+
+    };
+
 
     return (
         <Container>
+            <CircleMask ref={circleRef} iconColor="#f0b733" />
             <FilterTitleBox>
                 {filters.map(filter => (
                     <FilterTitle
@@ -219,11 +276,12 @@ const PortfolioLayout: React.FC<PortfolioLayoutProps> = ({ selectedKeys, toggleK
                     style={{ width: '100%', height: '100%', marginTop: '60px' }}
                     isDraggable={false}
                 >
-                    {filteredProjects.map(project => (
-                        <DirectUI key={project.id}>
-                            <DirectIcon onClick={() => navigate(`/portfolio/${project.id}`)} icon={project.icon || './icons/mstile-310x310.png'} />
+                    {projects.map(project => (
+                        <DirectUI key={project.id} onClick={e => handleIconClick(e, project.id, project.iconColor || '#f0b733')}>
+                            <DirectIcon icon={project.icon || './icons/mstile-310x310.png'} />
                             <DirectText>{project.name}</DirectText>
                         </DirectUI>
+
                     ))}
                 </ResponsiveGridLayout>
             </Wrap>
