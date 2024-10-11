@@ -90,7 +90,7 @@ const MBentoBoxGrid = () => {
     }, [windowSize]);
 
     // Playground 티켓 클릭 시 알람
-    const onClick = () => { alert('5월 오픈 예정! 아직 입장이 불가합니다.'); };
+    const onClick = () => { alert('아직 입장이 불가합니다.'); };
 
     // 그리드 레이아웃 설정
     const layouts = {
@@ -116,6 +116,8 @@ const MBentoBoxGrid = () => {
             rowHeight={rowHeight} // 동적으로 계산된 rowHeight 적용
             style={{ width: '100%', height: '100%', }}
             margin={[15, 20]}
+            isDraggable={false}
+            isResizable={false}
         >
             <Card key="ticket" style={{ cursor: 'no-drop' }} onClick={onClick} onMouseEnter={() => handleMouseEnter('Playground')} onMouseLeave={handleMouseLeave}>
                 <TicketCard />

@@ -108,7 +108,7 @@ const BentoBoxGrid = () => {
     }, [windowSize]);
 
     // Playground 티켓 클릭 시 알람
-    const onClick = () => { alert('5월 오픈 예정! 아직 입장이 불가합니다.'); };
+    const onClick = () => { alert('아직 입장이 불가합니다.'); };
 
     // 그리드 레이아웃 설정
     const layouts = {

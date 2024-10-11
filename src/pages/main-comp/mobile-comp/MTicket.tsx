@@ -57,7 +57,7 @@ const MTicket = () => {
                         <TextWrap>
                             <LeftText>Front</LeftText>
                             <RightText>Playground</RightText>
-                            <LeftBottomText>2024.05~</LeftBottomText>
+                            <LeftBottomText>2025~</LeftBottomText>
                         </TextWrap>
                     </ImgWrap>
                 </TopWrap>

@@ -211,7 +211,6 @@ const NavMenu = () => {
     const getHeight = (menuHeight: number): number => {
         const baseHeight = windowSize.height;
         let calHeight = baseHeight - menuHeight;
-        console.log(calHeight);
 
         return calHeight;
     };

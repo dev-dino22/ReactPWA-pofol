@@ -30,6 +30,7 @@ interface IKeyRef {
     keyRef1: React.RefObject<SVGPathElement>;
     keyRef2: React.RefObject<SVGPathElement>;
     keyRef3: React.RefObject<SVGPathElement>;
+    keyRef4: React.RefObject<SVGPathElement>;
 }
 ////////////////////////////   인터페이스 정의 끝   ////////////////////////////////
 
@@ -44,8 +45,10 @@ gsap.registerPlugin(Draggable);
 const KeyboardSVG = styled.svg`
     width: 100%;
     height: auto;
-    transform: scale(0.9);
+    transform: scale(1.2);
     cursor: pointer;
+    position: relative;
+    bottom: 100px;
 `
 const Container = styled.div<IHeight>`
         width: 100%;
@@ -129,9 +132,6 @@ const HandDragInfo = styled.div`
             opacity: 0;
         }
     }
-    img {
-        
-    }
 `
 const HandWrap = styled.div<{ firstHand: boolean }>`
     position: absolute;
@@ -209,43 +209,48 @@ const animatePath = (ref: React.RefObject<SVGPathElement>) => {
 /* 키보드의 SVG 렌더링. inline SVG.
 /* SVG 옆에 텍스트가 출력되고 해당 텍스트가 이미지처럼 반응형으로 되도록 relative로 감싸줌 */
 
-const KeyboardComp: React.FC<IKeyRef> = ({ keyRef1, keyRef2, keyRef3 }) => {
-    /*const keyRef1 = useRef<SVGPathElement>(null); // `<path>`에 대한 참조
-    const keyRef2 = useRef<SVGPathElement>(null);
-    const keyRef3 = useRef<SVGPathElement>(null);*/
+const KeyboardComp: React.FC<IKeyRef> = ({ keyRef1, keyRef2, keyRef3, keyRef4 }) => {
 
     const [selectedKey, setSelectedKey] = useState<string | null>(null);
 
     return (
         <div style={{ position: 'relative' }}>
-            <KeyboardSVG viewBox="0 0 73 558" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path ref={keyRef3} d="M6.81552 394.209L73 366V534L6.07686 500.159C2.41031 498.305 0.250926 494.397 0.632635 490.306L4.06591 453.511C4.68707 446.854 4.63902 440.151 3.92247 433.504L0.793996 404.48C0.322337 400.104 2.76689 395.935 6.81552 394.209Z" fill="url(#paint0_linear_378_410)" stroke="white" />
-                <path ref={keyRef2} d="M6.81552 226.209L73 198V366L6.07686 332.159C2.41031 330.305 0.250926 326.397 0.632635 322.306L4.06591 285.511C4.68707 278.854 4.63902 272.151 3.92247 265.504L0.793996 236.48C0.322337 232.104 2.76689 227.935 6.81552 226.209Z" fill="url(#paint1_linear_378_410)" stroke="white" />
-                <path ref={keyRef1} d="M6.81552 59.209L73 31V199L6.07686 165.159C2.41031 163.305 0.250926 159.397 0.632635 155.306L4.06591 118.511C4.68707 111.854 4.63902 105.151 3.92247 98.5035L0.793996 69.48C0.322337 65.1043 2.76689 60.9346 6.81552 59.209Z" fill="url(#paint2_linear_378_410)" stroke="white" />
-                <rect x="46.5" y="0.5" width="57" height="557" rx="9.5" fill="black" stroke="white" />
+            <KeyboardSVG viewBox="0 0 104 728" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path ref={keyRef4} d="M6.81552 562.209L73 534V702L6.07686 668.159C2.41031 666.305 0.250926 662.397 0.632635 658.306L4.06591 621.511C4.68707 614.854 4.63902 608.151 3.92247 601.504L0.793996 572.48C0.322337 568.104 2.76689 563.935 6.81552 562.209Z" fill="url(#paint1_linear_469_495)" stroke="white" />
+                <path ref={keyRef3} d="M6.81552 394.209L73 366V534L6.07686 500.159C2.41031 498.305 0.250926 494.397 0.632635 490.306L4.06591 453.511C4.68707 446.854 4.63902 440.151 3.92247 433.504L0.793996 404.48C0.322337 400.104 2.76689 395.935 6.81552 394.209Z" fill="url(#paint0_linear_469_495)" stroke="white" />
+                <path ref={keyRef2} d="M6.81552 226.209L73 198V366L6.07686 332.159C2.41031 330.305 0.250926 326.397 0.632635 322.306L4.06591 285.511C4.68707 278.854 4.63902 272.151 3.92247 265.504L0.793996 236.48C0.322337 232.104 2.76689 227.935 6.81552 226.209Z" fill="url(#paint2_linear_469_495)" stroke="white" />
+                <path ref={keyRef1} d="M6.81552 59.209L73 31V199L6.07686 165.159C2.41031 163.305 0.250926 159.397 0.632635 155.306L4.06591 118.511C4.68707 111.854 4.63902 105.151 3.92247 98.5035L0.793996 69.48C0.322337 65.1043 2.76689 60.9346 6.81552 59.209Z" fill="url(#paint3_linear_469_495)" stroke="white" />
+                <rect x="46.5" y="0.5" width="57" height="727" rx="9.5" fill="black" stroke="white" />
                 <defs>
-                    <linearGradient id="paint0_linear_378_410" x1="46.5" y1="450" x2="-54.5" y2="450" gradientUnits="userSpaceOnUse">
+                    <linearGradient id="paint0_linear_469_495" x1="46.5" y1="450" x2="-54.5" y2="450" gradientUnits="userSpaceOnUse">
                         <stop />
-                        <stop offset="1" stop-color="#6E6E6E" />
+                        <stop offset="1" stopColor="#6E6E6E" />
                     </linearGradient>
-                    <linearGradient id="paint1_linear_378_410" x1="46.5" y1="282" x2="-54.5" y2="282" gradientUnits="userSpaceOnUse">
+                    <linearGradient id="paint1_linear_469_495" x1="46.5" y1="618" x2="-54.5" y2="618" gradientUnits="userSpaceOnUse">
                         <stop />
-                        <stop offset="1" stop-color="#6E6E6E" />
+                        <stop offset="1" stopColor="#6E6E6E" />
                     </linearGradient>
-                    <linearGradient id="paint2_linear_378_410" x1="46.5" y1="115" x2="-54.5" y2="115" gradientUnits="userSpaceOnUse">
+                    <linearGradient id="paint2_linear_469_495" x1="46.5" y1="282" x2="-54.5" y2="282" gradientUnits="userSpaceOnUse">
                         <stop />
-                        <stop offset="1" stop-color="#6E6E6E" />
+                        <stop offset="1" stopColor="#6E6E6E" />
+                    </linearGradient>
+                    <linearGradient id="paint3_linear_469_495" x1="46.5" y1="115" x2="-54.5" y2="115" gradientUnits="userSpaceOnUse">
+                        <stop />
+                        <stop offset="1" stopColor="#6E6E6E" />
                     </linearGradient>
                 </defs>
             </KeyboardSVG>
-            <p style={{ fontWeight: '600', fontSize: '4.6rem', position: 'absolute', top: '23%', left: '-100%', transform: 'translate(-50%, -50%)', color: '#ffffffa6' }}>
+            <p style={{ fontWeight: '600', fontSize: '4.6rem', position: 'absolute', top: '-15%', left: '-100%', transform: 'translate(-50%, -50%)', color: '#ffffffa6' }}>
                 UX/UI
             </p>
-            <p style={{ fontWeight: '600', fontSize: '4.6rem', position: 'absolute', top: '50%', left: '-100%', transform: 'translate(-50%, -50%)', color: '#ffffffa6' }}>
+            <p style={{ fontWeight: '600', fontSize: '4.6rem', position: 'absolute', top: '12%', left: '-100%', transform: 'translate(-50%, -50%)', color: '#ffffffa6' }}>
                 Video
             </p>
-            <p style={{ fontWeight: '600', fontSize: '4.6rem', position: 'absolute', top: '75%', left: '-100%', transform: 'translate(-50%, -50%)', color: '#ffffffa6' }}>
+            <p style={{ fontWeight: '600', fontSize: '4.6rem', position: 'absolute', top: '40%', left: '-100%', transform: 'translate(-50%, -50%)', color: '#ffffffa6' }}>
                 Dev
+            </p>
+            <p style={{ fontWeight: '600', fontSize: '4.6rem', position: 'absolute', top: '67%', left: '-120%', transform: 'translate(-50%, -50%)', color: '#ffffffa6' }}>
+                Graphic
             </p>
         </div>
     )
@@ -274,6 +279,7 @@ const PortfolioUI = () => {
     const keyRef1 = useRef<SVGPathElement>(null); // `<path>`에 대한 참조
     const keyRef2 = useRef<SVGPathElement>(null);
     const keyRef3 = useRef<SVGPathElement>(null);
+    const keyRef4 = useRef<SVGPathElement>(null);
 
     const [initialPos, setInitialPos] = useState<Position>({ x: 0, y: 0 });
 
@@ -327,7 +333,7 @@ const PortfolioUI = () => {
 
     // 각 키에 대한 클릭 이벤트 핸들러를 설정합니다.
     useEffect(() => {
-        const refs = [keyRef1, keyRef2, keyRef3];
+        const refs = [keyRef1, keyRef2, keyRef3, keyRef4];
         const handlers = refs.map((ref, idx) => {
             return () => {
                 const keyName = `keyRef${idx + 1}`;
@@ -373,7 +379,7 @@ const PortfolioUI = () => {
                 },
                 onDrag: function () {
                     setFirstHand(false);
-                    [keyRef1, keyRef2, keyRef3].forEach((ref, idx) => {
+                    [keyRef1, keyRef2, keyRef3, keyRef4].forEach((ref, idx) => {
                         const keyName = `keyRef${idx + 1}`;
                         if (ref.current && handPoint.current) {
                             const keyRect = ref.current.getBoundingClientRect();
@@ -424,7 +430,7 @@ const PortfolioUI = () => {
                         <img src="/image/portfolio/hand2.png" />
                     </HandWrap>
                     <KeyboardWrap>
-                        <KeyboardComp keyRef1={keyRef1} keyRef2={keyRef2} keyRef3={keyRef3} />
+                        <KeyboardComp keyRef1={keyRef1} keyRef2={keyRef2} keyRef3={keyRef3} keyRef4={keyRef4} />
                     </KeyboardWrap>
                 </Background>}
                 <LayoutWrap>

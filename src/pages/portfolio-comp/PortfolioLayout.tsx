@@ -11,25 +11,6 @@ const Container = styled.div`
     background-repeat: no-repeat;
     background-attachment: fixed;
     backdrop-filter: blur(10px);
-    animation: float 8s ease infinite;
-    @keyframes float {
-        0%, 100% {
-            background-size: 150%; // 애니메이션과 스케일 조합
-        }
-        50% {
-            background-size: 100%;
-        }
-    }
-    @media only screen and (max-width: 991px){
-        @keyframes float {
-        0%, 100% {
-            background-size: 200%; // 애니메이션과 스케일 조합
-        }
-        50% {
-            background-size: 150%;
-        }
-    }
-    }
 `
 const Wrap = styled.div`
     display: flex;
@@ -171,7 +152,8 @@ const projects: Project[] = [
 const filters = [
     { id: 'keyRef1', label: 'UX/UI' },
     { id: 'keyRef2', label: 'Video' },
-    { id: 'keyRef3', label: 'Dev' }
+    { id: 'keyRef3', label: 'Dev' },
+    { id: 'keyRef4', label: 'Graphic' },
 ];
 
 

@@ -35,12 +35,56 @@ const HomeSVG = ({ fill = "none" }) => {
     );
 }
 
+const Tab = styled.div<TabProps & { hoverStyle: number }>`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ${({ hoverStyle, isSelected }) => hoverStyle === 1 && `
+      &:hover {
+        border: 2px solid #3CADFF;
+        border-top-left-radius: 30px;
+        border-bottom-left-radius: 30px;
+        @media only screen and (max-width: 991px) {
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+        }
+      }
+    `}
+
+    ${({ hoverStyle, isSelected }) => hoverStyle === 2 && `
+      &:hover {
+        border: 2px solid #3CADFF;
+        border-radius: 0px;
+      }
+    `}
+
+    ${({ hoverStyle, isSelected }) => hoverStyle === 3 && `
+      &:hover {
+        border: 2px solid #3CADFF;
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 30px;
+        @media only screen and (max-width: 991px) {
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+        }
+      }
+    `}
+`;
 
 //LinkSNS 컴포넌트 시작
 
 const LinkSNS = () => {
     const [isSelected, setIsSelected] = useState<string>('');
     const [activeTab, setActiveTab] = useState<string>('');
+    const handleTabClick = (tabId: string, url?: string) => {
+        setActiveTab(tabId);
+        if (url) {
+            window.location.href = url;
+        }
+    };
     return (
         <Container>
             <Tab hoverStyle={1} isSelected={activeTab === '1'} onMouseEnter={() => setIsSelected('1')} onMouseLeave={() => setIsSelected('')} style={{ borderRight: isSelected === '1' ? '' : '1px dashed #343434' }}>
@@ -53,7 +97,7 @@ const LinkSNS = () => {
                     <MailSVG fill={isSelected === '2' ? "#000000" : "#454545"} />
                 </ResizeWrap>
             </Tab>
-            <Tab hoverStyle={3} isSelected={activeTab === '3'} onMouseEnter={() => setIsSelected('3')} onMouseLeave={() => setIsSelected('')} style={{ borderLeft: isSelected === '3' ? '' : '1px dashed #343434' }}>
+            <Tab onClick={() => handleTabClick('3', 'https://designnozzle.com/')} hoverStyle={3} isSelected={activeTab === '3'} onMouseEnter={() => setIsSelected('3')} onMouseLeave={() => setIsSelected('')} style={{ borderLeft: isSelected === '3' ? '' : '1px dashed #343434' }}>
                 <ResizeWrap>
                     <HomeSVG fill={isSelected === '3' ? "#000000" : "#454545"} />
                 </ResizeWrap>
@@ -107,44 +151,7 @@ const IconWrap = styled.div`
     font-size: 24px;
 `;
 
-const Tab = styled.div<TabProps & { hoverStyle: number }>`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
-    ${({ hoverStyle, isSelected }) => hoverStyle === 1 && `
-      &:hover {
-        border: 2px solid #3CADFF;
-        border-top-left-radius: 30px;
-        border-bottom-left-radius: 30px;
-        @media only screen and (max-width: 991px) {
-            border-top-left-radius: 15px;
-            border-bottom-left-radius: 15px;
-        }
-      }
-    `}
-
-    ${({ hoverStyle, isSelected }) => hoverStyle === 2 && `
-      &:hover {
-        border: 2px solid #3CADFF;
-        border-radius: 0px;
-      }
-    `}
-
-    ${({ hoverStyle, isSelected }) => hoverStyle === 3 && `
-      &:hover {
-        border: 2px solid #3CADFF;
-        border-top-right-radius: 30px;
-        border-bottom-right-radius: 30px;
-        @media only screen and (max-width: 991px) {
-            border-top-left-radius: 15px;
-            border-bottom-left-radius: 15px;
-        }
-      }
-    `}
-`;
 
 
 export default LinkSNS;

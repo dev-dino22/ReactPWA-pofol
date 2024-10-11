@@ -20,10 +20,10 @@ const PortfolioBanner = () => {
                 <img src="./image/main/keyboard-glass.png" alt="Keyboard and Glass" />
             </ImgWrap>
             <TextWrap>
+                <p onClick={(e) => { e.stopPropagation(); navigate("/portfolio", { state: { filterKey: 'keyRef1' } }) }}>UI/UX Design</p>
                 <p onClick={(e) => { e.stopPropagation(); navigate("/portfolio", { state: { filterKey: 'keyRef2' } }) }}>Video Design</p>
-                <p onClick={(e) => { e.stopPropagation(); navigate("/portfolio", { state: { filterKey: 'keyRef1' } }) }}>UI/UX design</p>
-                <p onClick={(e) => { e.stopPropagation(); navigate("/portfolio", { state: { filterKey: 'keyRef3' } }) }}>Web/App design</p>
-                <p onClick={(e) => { e.stopPropagation(); navigate("/portfolio", { state: { filterKey: 'keyRef3' } }) }}>Front-end development</p>
+                <p onClick={(e) => { e.stopPropagation(); navigate("/portfolio", { state: { filterKey: 'keyRef4' } }) }}>Graphic Design</p>
+                <p onClick={(e) => { e.stopPropagation(); navigate("/portfolio", { state: { filterKey: 'keyRef3' } }) }}>Front-end Development</p>
             </TextWrap>
         </Container>
     );
